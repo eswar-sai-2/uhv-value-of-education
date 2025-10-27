@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌱 Value Education Quiz</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #e0f7fa, #fce4ec);
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    background: #fff;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  h1 {
+    text-align: center;
+    color: #00796b;
+  }
+  #timer {
+    font-weight: bold;
+    color: #d32f2f;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .question {
+    font-weight: bold;
+    color: #4a148c;
+    margin-bottom: 15px;
+  }
+  .options button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #f3e5f5;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .options button:hover {
+    background: #ce93d8;
+  }
+  .correct {
+    background: #a5d6a7 !important;
+    color: #1b5e20;
+  }
+  .wrong {
+    background: #ef9a9a !important;
+    color: #b71c1c;
+  }
+  #start-screen, #quiz-screen, #result-screen {
+    display: none;
+  }
+  #start-screen {
+    display: block;
+    text-align: center;
+  }
+  #start-screen input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 60%;
+    margin-bottom: 20px;
+  }
+  button {
+    padding: 12px 20px;
+    background-color: #00796b;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background-color: #004d40;
+  }
+  #result {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #388e3c;
+  }
+  ol {
+    color: #6a1b9a;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Start Screen -->
+  <div id="start-screen">
+    <h1>🌱 Value Education Quiz</h1>
+    <p>Enter your name to begin:</p>
+    <input type="text" id="username" placeholder="Your name here">
+    <br>
+    <button onclick="startQuiz()">Start Quiz</button>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div id="quiz-screen">
+    <div id="timer">Time: 10:00</div>
+    <div id="question"></div>
+    <div class="options" id="options"></div>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="result-screen">
+    <div id="result"></div>
+    <h3>🏆 Leaderboard (Top 5)</h3>
+    <ol id="leaderboard-list"></ol>
+    <div style="text-align:center; margin-top:20px;">
+      <button onclick="restartQuiz()">Play Again</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const quizData = [
+{q:"Holistic development in education refers to a balanced growth that integrates intellectual, emotional, physical, and ethical dimensions of a person’s life. Which among the following best represents the pillars of holistic development?",options:["Money, fame, and recognition","Right understanding, relationships, and physical facilities","Status, power, and control","Obedience, discipline, and silence"],answer:1},
+{q:"The role of education, according to value-based learning, is not just to train individuals for careers but to help them live harmoniously within themselves and with others. Which statement aligns most closely with this philosophy?",options:["Education is mainly a means of livelihood","Education should lead to right understanding and self-realization","Education should focus on grades and competition","Education should emphasize external achievements only"],answer:1},
+{q:"The component of 'Right Understanding' in holistic development primarily involves:",options:["Memorizing moral rules","Discerning the truth through self exploration and reasoning","Depending on teachers for ethical clarity","Following traditions without questioning"],answer:1},
+{q:"A harmonious relationship with others is achieved when one recognizes:",options:["Others as rivals in life","Mutual fulfillment and respect as the foundation of coexistence","That happiness depends on others’ approval","The need to control or dominate others"],answer:1},
+{q:"Physical facilities are essential for human living, but they cannot ensure happiness alone because:",options:["They change frequently and never satisfy inner needs","They fulfill all psychological aspirations","They are infinite in nature","They lead to inner stability"],answer:0},
+{q:"Value education emphasizes the development of inner consciousness. What is the ultimate goal of this development?",options:["Acquiring social status","Achieving continuous happiness and prosperity","Competing successfully in society","Accumulating wealth"],answer:1},
+{q:"In the practice session PS1 'Sharing about oneself,' students are encouraged to reflect on:",options:["Their social media habits","Their personal experiences, values, and feelings","Academic weaknesses","Political opinions"],answer:1},
+{q:"Understanding value education means realizing that education should:",options:["Be limited to employability skills","Include moral and ethical awareness integrated with knowledge","Focus on economic success only","Be purely theoretical"],answer:1},
+{q:"Self-exploration as a process in value education helps an individual to:",options:["Depend more on external systems","Discover one’s own natural acceptance of right and wrong","Avoid self-introspection","Seek validation from others"],answer:1},
+{q:"Natural acceptance refers to:",options:["Social approval of an action","What one genuinely feels right without external influence","What others dictate as correct","Following cultural traditions blindly"],answer:1},
+{q:"Continuous happiness is different from temporary pleasure because it:",options:["Comes from sensory stimulation","Arises from harmony within the self and with others","Depends on material gain","Lasts only for a short time"],answer:1},
+{q:"Prosperity, in the context of value education, means:",options:["Owning luxurious items","Feeling content with adequate physical facilities","Competing for more wealth","Having more than others"],answer:1},
+{q:"The practice session PS2 'Exploring Human Consciousness' focuses on:",options:["Enhancing physical strength","Understanding self-awareness and internal harmony","Developing better memory","Improving social behavior"],answer:1},
+{q:"The current scenario of happiness and prosperity in society indicates that:",options:["People have achieved both happiness and peace","Despite material wealth, people face stress and dissatisfaction","People value relationships over possessions","Everyone has attained harmony"],answer:1},
+{q:"According to value education, education today needs reformation because:",options:["It emphasizes information over understanding","It already covers moral aspects","It focuses equally on ethics and technology","It discourages competition"],answer:0},
+{q:"The method to fulfill basic human aspirations involves:",options:["Blindly adopting external systems","Self-exploration leading to right understanding and correct living","Accumulating money and fame","Following peer opinions"],answer:1},
+{q:"Human aspirations like happiness and prosperity can be truly met only when:",options:["Material needs dominate our lives","There is harmony in thought, behavior, and relationships","Others’ opinions control our happiness","We achieve power and authority"],answer:1},
+{q:"A person with right understanding is likely to:",options:["Exploit others for personal gain","Live with self-confidence, harmony, and responsibility","Depend solely on external rewards","Neglect moral values"],answer:1},
+{q:"The imbalance between happiness and prosperity in the modern world arises mainly from:",options:["Technological backwardness","Lack of education","Absence of value-based understanding","Poverty alone"],answer:2},
+{q:"True education should result in:",options:["A job and stable income only","Inner transformation leading to harmony with self, family, and society","Obedience to social norms only","Mastery of information"],answer:1}
+];
+
+let currentQuestion = 0;
+let score = 0;
+let timer;
+let timeLeft = 600; // 10 minutes
+let username = "";
+
+function startQuiz() {
+  username = document.getElementById("username").value.trim();
+  if (!username) {
+    alert("Please enter your name!");
+    return;
+  }
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "block";
+  showQuestion();
+  startTimer();
+}
+
+function startTimer() {
+  timer = setInterval(() => {
+    timeLeft--;
+    let minutes = Math.floor(timeLeft / 60);
+    let seconds = timeLeft % 60;
+    document.getElementById("timer").textContent = `Time: ${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      endQuiz();
+    }
+  }, 1000);
+}
+
+function showQuestion() {
+  if (currentQuestion >= quizData.length) {
+    endQuiz();
+    return;
+  }
+  const qData = quizData[currentQuestion];
+  document.getElementById("question").textContent = `${currentQuestion + 1}. ${qData.q}`;
+  const optionsContainer = document.getElementById("options");
+  optionsContainer.innerHTML = "";
+  qData.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(i, btn);
+    optionsContainer.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected, btn) {
+  const qData = quizData[currentQuestion];
+  const allBtns = document.querySelectorAll(".options button");
+  if (selected === qData.answer) {
+    btn.classList.add("correct");
+    score++;
+  } else {
+    btn.classList.add("wrong");
+    allBtns[qData.answer].classList.add("correct");
+  }
+  allBtns.forEach(b => (b.disabled = true));
+  setTimeout(() => {
+    currentQuestion++;
+    showQuestion();
+  }, 1000);
+}
+
+function endQuiz() {
+  clearInterval(timer);
+  document.getElementById("quiz-screen").style.display = "none";
+  document.getElementById("result-screen").style.display = "block";
+  document.getElementById("result").textContent = `${username}, you scored ${score} out of ${quizData.length}`;
+  updateLeaderboard(username, score);
+  displayLeaderboard();
+}
+
+function updateLeaderboard(name, points) {
+  if (!name || isNaN(points)) return;
+  let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+  leaderboard = leaderboard.filter(entry => entry.name && !isNaN(entry.points));
+  leaderboard.push({ name, points });
+  leaderboard.sort((a, b) => b.points - a.points);
+  leaderboard = leaderboard.slice(0, 5);
+  localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+}
+
+function displayLeaderboard() {
+  let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+  const list = document.getElementById("leaderboard-list");
+  list.innerHTML = "";
+  if (leaderboard.length === 0) {
+    list.innerHTML = "<li>No scores yet</li>";
+    return;
+  }
+  leaderboard.forEach(entry => {
+    const li = document.createElement("li");
+    li.textContent = `${entry.name} - ${entry.points} points`;
+    list.appendChild(li);
+  });
+}
+
+function restartQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  timeLeft = 600;
+  document.getElementById("result-screen").style.display = "none";
+  document.getElementById("quiz-screen").style.display = "none";
+  document.getElementById("start-screen").style.display = "block";
+  document.getElementById("username").value = "";
+}
+</script>
+</body>
+</html>
