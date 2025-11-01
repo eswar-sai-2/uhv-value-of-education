@@ -221,17 +221,6 @@ function endQuiz() {
   updateLeaderboard(username, score);
   displayLeaderboard();
 }
-
-function updateLeaderboard(name, points) {
-  if (!name || isNaN(points)) return;
-  let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
-  leaderboard = leaderboard.filter(entry => entry.name && !isNaN(entry.points));
-  leaderboard.push({ name, points });
-  leaderboard.sort((a, b) => b.points - a.points);
-  leaderboard = leaderboard.slice(0, 5);
-  localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
-}
-
 function displayLeaderboard() {
   let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
   const list = document.getElementById("leaderboard-list");
@@ -242,7 +231,7 @@ function displayLeaderboard() {
     return;
   }
 
-  // 🔹 Show Top 5
+  // 🔹 Show Top 5 players
   const topFive = leaderboard.slice(0, 5);
   topFive.forEach(entry => {
     const li = document.createElement("li");
@@ -250,18 +239,32 @@ function displayLeaderboard() {
     list.appendChild(li);
   });
 
-  // 🔹 Show total participants below leaderboard
+  // 🔹 Show all participants below leaderboard
   const allNames = leaderboard.map(entry => entry.name);
+
   const totalDiv = document.createElement("div");
   totalDiv.style.marginTop = "20px";
   totalDiv.style.textAlign = "center";
   totalDiv.style.color = "#6a1b9a";
   totalDiv.innerHTML = `
     <h4>Total Participants: ${leaderboard.length}</h4>
-    <p>${allNames.join(", ")}</p>
+    <div style="
+      max-height: 100px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin: 10px auto;
+      width: 80%;
+      background: #f3e5f5;
+    ">
+      ${allNames.join("<br>")}
+    </div>
   `;
+  
   list.parentElement.appendChild(totalDiv);
 }
+
 
 
 function restartQuiz() {
@@ -276,4 +279,5 @@ function restartQuiz() {
 </script>
 </body>
 </html>
+
 
