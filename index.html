@@ -118,13 +118,16 @@
     <h3>🏆 Leaderboard (Top 5)</h3>
     <ol id="leaderboard-list"></ol>
     <div style="text-align:center; margin-top:20px;">
-      <button onclick="restartQuiz()">Play Again</button>
-    </div>
+  <button onclick="restartQuiz()">Play Again</button>
+  <button onclick="clearParticipants()" style="background-color:#d32f2f; margin-left:10px;">Clear Participants</button>
+</div>
+
   </div>
 
 </div>
 
 <script>
+  
 const quizData = [
 {q:"Holistic development in education refers to a balanced growth that integrates intellectual, emotional, physical, and ethical dimensions of a person’s life. Which among the following best represents the pillars of holistic development?",options:["Money, fame, and recognition","Right understanding, relationships, and physical facilities","Status, power, and control","Obedience, discipline, and silence"],answer:1},
 {q:"The role of education, according to value-based learning, is not just to train individuals for careers but to help them live harmoniously within themselves and with others. Which statement aligns most closely with this philosophy?",options:["Education is mainly a means of livelihood","Education should lead to right understanding and self-realization","Education should focus on grades and competition","Education should emphasize external achievements only"],answer:1},
@@ -218,9 +221,25 @@ function endQuiz() {
   document.getElementById("quiz-screen").style.display = "none";
   document.getElementById("result-screen").style.display = "block";
   document.getElementById("result").textContent = `${username}, you scored ${score} out of ${quizData.length}`;
+
   updateLeaderboard(username, score);
   displayLeaderboard();
+
+  // 🔹 Show "Clear Participants" button only for admin (you)
+  const buttonsDiv = document.getElementById("result-buttons");
+  buttonsDiv.innerHTML = `<button onclick="restartQuiz()">Play Again</button>`;
+  
+  // Change 'YourNameHere' to your real name
+  if (username.toLowerCase() === "eswar sai") {
+    const clearBtn = document.createElement("button");
+    clearBtn.textContent = "Clear Participants";
+    clearBtn.style.backgroundColor = "#d32f2f";
+    clearBtn.style.marginLeft = "10px";
+    clearBtn.onclick = clearParticipants;
+    buttonsDiv.appendChild(clearBtn);
+  }
 }
+
 function displayLeaderboard() {
   let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
   const list = document.getElementById("leaderboard-list");
@@ -276,8 +295,17 @@ function restartQuiz() {
   document.getElementById("start-screen").style.display = "block";
   document.getElementById("username").value = "";
 }
+  function clearParticipants() {
+  if (confirm("Are you sure you want to remove all participants?")) {
+    localStorage.removeItem("leaderboard");
+    alert("All participants removed successfully!");
+    displayLeaderboard();
+  }
+}
+
 </script>
 </body>
 </html>
+
 
 
