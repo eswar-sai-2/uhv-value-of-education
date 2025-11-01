@@ -99,10 +99,14 @@
   <!-- Start Screen -->
   <div id="start-screen">
     <h1>🌱 Value Education Quiz</h1>
-    <p>Enter your name to begin:</p>
-    <input type="text" id="username" placeholder="Your name here">
-    <br>
-    <button onclick="startQuiz()">Start Quiz</button>
+   <p>Enter your name to begin:</p>
+<input type="text" id="username" placeholder="Your name here" oninput="checkAdminName()"><br>
+<div id="adminCodeContainer" style="display:none;">
+  <input type="password" id="adminCode" placeholder="Enter Admin Code"><br>
+</div>
+<button onclick="startQuiz()">Start Quiz</button>
+
+
   </div>
 
   <!-- Quiz Screen -->
@@ -157,17 +161,45 @@ let timer;
 let timeLeft = 600; // 10 minutes
 let username = "";
 
+let isAdmin = false; // global flag
+  function checkAdminName() {
+  const name = document.getElementById("username").value.trim().toLowerCase();
+  const adminContainer = document.getElementById("adminCodeContainer");
+  
+  // 🔹 Show admin code box only if the name matches
+  if (name === "eswar sai") {
+    adminContainer.style.display = "block";
+  } else {
+    adminContainer.style.display = "none";
+  }
+}
+
+
+let isAdmin = false; // global flag
+
 function startQuiz() {
   username = document.getElementById("username").value.trim();
+  const adminInput = document.getElementById("adminCode")?.value.trim() || "";
+
   if (!username) {
     alert("Please enter your name!");
     return;
   }
+
+  // 🔹 Authenticate admin (change code if you want)
+  if (username.toLowerCase() === "eswar sai" && adminInput === "1234") {
+    isAdmin = true;
+  } else {
+    isAdmin = false;
+  }
+
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("quiz-screen").style.display = "block";
   showQuestion();
   startTimer();
 }
+
+
 
 function startTimer() {
   timer = setInterval(() => {
@@ -215,7 +247,6 @@ function checkAnswer(selected, btn) {
     showQuestion();
   }, 1000);
 }
-
 function endQuiz() {
   clearInterval(timer);
   document.getElementById("quiz-screen").style.display = "none";
@@ -225,12 +256,11 @@ function endQuiz() {
   updateLeaderboard(username, score);
   displayLeaderboard();
 
-  // 🔹 Show "Clear Participants" button only for admin (you)
+  // 🔹 Show admin-only "Clear Participants" button
   const buttonsDiv = document.getElementById("result-buttons");
   buttonsDiv.innerHTML = `<button onclick="restartQuiz()">Play Again</button>`;
   
-  // Change 'YourNameHere' to your real name
-  if (username.toLowerCase() === "eswar sai") {
+  if (isAdmin) {
     const clearBtn = document.createElement("button");
     clearBtn.textContent = "Clear Participants";
     clearBtn.style.backgroundColor = "#d32f2f";
@@ -239,6 +269,8 @@ function endQuiz() {
     buttonsDiv.appendChild(clearBtn);
   }
 }
+
+
 
 function displayLeaderboard() {
   let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
@@ -302,10 +334,19 @@ function restartQuiz() {
     displayLeaderboard();
   }
 }
+  function clearParticipants() {
+  if (confirm("Are you sure you want to remove all participants?")) {
+    localStorage.removeItem("leaderboard");
+    alert("All participants removed successfully!");
+    displayLeaderboard();
+  }
+}
+
 
 </script>
 </body>
 </html>
+
 
 
 
