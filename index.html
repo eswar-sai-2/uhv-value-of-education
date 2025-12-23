@@ -3,238 +3,258 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌱 Value Education Quiz</title>
+<title>Value Education Quiz</title>
+
 <style>
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #e0f7fa, #fce4ec);
-  margin: 0;
-  padding: 0;
+/* 🌱 UHV THEME BACKGROUND */
+body{
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #e8f5e9, #e3f2fd);
+  margin:0;
+  padding:0;
 }
-.container {
-  max-width: 800px;
-  background: #fff;
-  margin: 50px auto;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+/* MAIN CARD */
+.container{
+  max-width:900px;
+  background:#ffffff;
+  margin:30px auto;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
 }
-h1 { text-align: center; color: #00796b; }
-#timer { font-weight: bold; color: #d32f2f; text-align: center; margin-bottom: 20px; }
-.question { font-weight: bold; color: #4a148c; margin-bottom: 15px; }
-.options button {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #f3e5f5;
-  cursor: pointer;
-  transition: background 0.3s;
+
+/* HEADINGS */
+h1{
+  text-align:center;
+  color:#2e7d32;
 }
-.options button:hover { background: #ce93d8; }
-.correct { background: #a5d6a7 !important; color: #1b5e20; }
-.wrong { background: #ef9a9a !important; color: #b71c1c; }
-#start-screen, #quiz-screen, #result-screen { display: none; }
-#start-screen { display: block; text-align: center; }
-#start-screen input {
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  width: 60%;
-  margin-bottom: 20px;
+
+/* TIMER & PROGRESS */
+#timer{
+  text-align:center;
+  font-weight:bold;
+  color:#c62828;
+  margin-bottom:5px;
+  font-size:18px;
 }
-button {
-  padding: 12px 20px;
-  background-color: #00796b;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
+#progress{
+  text-align:center;
+  font-weight:bold;
+  color:#1565c0;
+  margin-bottom:15px;
 }
-button:hover { background-color: #004d40; }
-#result { font-size: 20px; font-weight: bold; text-align: center; color: #388e3c; }
-ol { color: #6a1b9a; }
+
+/* QUESTION */
+#question{
+  font-weight:bold;
+  color:#1b5e20;
+  margin-bottom:15px;
+  font-size:17px;
+}
+
+/* OPTIONS – FIXED VISIBILITY */
+.options button{
+  width:100%;
+  padding:14px;
+  margin-bottom:12px;
+  border:2px solid #81c784;
+  border-radius:8px;
+  background:#e8f5e9;        /* darker than before */
+  color:#1b5e20;             /* dark text */
+  cursor:pointer;
+  font-size:16px;
+  font-weight:600;
+  text-align:left;
+  box-shadow:0 2px 4px rgba(0,0,0,0.1);
+  transition:0.2s;
+}
+
+/* Hover */
+.options button:hover{
+  background:#c8e6c9;
+}
+
+/* Correct / Wrong */
+.correct{
+  background:#c8e6c9 !important;
+  border-color:#2e7d32;
+  color:#1b5e20;
+}
+.wrong{
+  background:#ffcdd2 !important;
+  border-color:#c62828;
+  color:#b71c1c;
+}
+
+/* GENERAL BUTTONS */
+button{
+  padding:12px 22px;
+  background:#2e7d32;
+  color:white;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:15px;
+}
+button:hover{
+  background:#1b5e20;
+}
+
+/* SCREENS */
+#start-screen,#quiz-screen,#result-screen{display:none;}
+#start-screen{display:block;text-align:center;}
+
+/* INPUT */
+input{
+  padding:12px;
+  width:60%;
+  margin-bottom:15px;
+  border-radius:6px;
+  border:1px solid #81c784;
+  font-size:15px;
+}
+
+/* RESULT */
+#result{
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
+  color:#2e7d32;
+}
 </style>
 </head>
 
 <body>
 <div class="container">
 
-  <!-- Start Screen -->
-  <div id="start-screen">
-    <h1>🌱 Value Education Quiz</h1>
-    <p>Enter your name to begin:</p>
-    <input type="text" id="username" placeholder="Your name here" oninput="checkAdminName()"><br>
-    <div id="adminCodeContainer" style="display:none;">
-      <input type="password" id="adminCode" placeholder="Enter Admin Code"><br>
-    </div>
-    <button onclick="startQuiz()">Start Quiz</button>
-  </div>
+<!-- START SCREEN -->
+<div id="start-screen">
+  <h1>🌱 Value Education Quiz (UHV)</h1>
+  <p>Enter your name to begin</p>
+  <input type="text" id="username" placeholder="Your Name"><br>
+  <button onclick="startQuiz()">Start Quiz</button>
+</div>
 
-  <!-- Quiz Screen -->
-  <div id="quiz-screen">
-    <div id="timer">Time: 10:00</div>
-    <div id="question"></div>
-    <div class="options" id="options"></div>
-  </div>
+<!-- QUIZ SCREEN -->
+<div id="quiz-screen">
+  <div id="timer">Time: 40:00</div>
+  <div id="progress"></div>
+  <div id="question"></div>
+  <div class="options" id="options"></div>
+</div>
 
-  <!-- Result Screen -->
-  <div id="result-screen">
-    <div id="result"></div>
-    <h3>🏆 Leaderboard (Top 5)</h3>
-    <ol id="leaderboard-list"></ol>
-    <div id="result-buttons" style="text-align:center; margin-top:20px;">
-      <button onclick="restartQuiz()">Play Again</button>
-    </div>
-  </div>
+<!-- RESULT SCREEN -->
+<div id="result-screen">
+  <div id="result"></div>
+  <button onclick="location.reload()">Restart Quiz</button>
+</div>
 
 </div>
 
 <script>
+/* ================= ALL QUESTIONS ================= */
 const quizData = [
-  { q: "Holistic development in education refers to ...", options: ["Money, fame, and recognition", "Right understanding, relationships, and physical facilities", "Status, power, and control", "Obedience, discipline, and silence"], answer: 1 },
-  { q: "The role of education is to enable the student to:", options: ["Get employment only", "Gain information", "Develop right understanding", "Earn money quickly"], answer: 2 },
-  { q: "What is the main focus of value education?", options: ["External success", "Right understanding and human values", "Competition", "Marks and grades"], answer: 1 },
-  { q: "The process of self-exploration helps in:", options: ["Finding job opportunities", "Understanding one's happiness and purpose", "Memorizing facts", "Becoming rich"], answer: 1 },
-  { q: "Human happiness primarily depends on:", options: ["Material wealth", "Power and status", "Right understanding and good relationships", "Luck"], answer: 2 },
-  { q: "Relationship is based on:", options: ["Mutual fear", "Mutual trust and respect", "Self-interest", "Competition"], answer: 1 },
-  { q: "Which one is not a natural acceptance for human being?", options: ["Happiness", "Trust", "Dishonesty", "Respect"], answer: 2 },
-  { q: "Which one is a basic human aspiration?", options: ["Money", "Happiness", "Fame", "Power"], answer: 1 },
-  { q: "Trust means:", options: ["Having faith blindly", "Mutual understanding and assurance", "Competition", "Obedience"], answer: 1 },
-  { q: "Prosperity means:", options: ["Having more money", "Feeling of having enough physical facilities", "Luxury", "Owning property"], answer: 1 },
-  { q: "Which one is a program for right living?", options: ["Self-exploration", "Memorization", "Competition", "Obedience"], answer: 0 },
-  { q: "Self-exploration leads to:", options: ["Right understanding", "Confusion", "Dependency", "Ignorance"], answer: 0 },
-  { q: "The basic human values include:", options: ["Wealth and power", "Trust and respect", "Status and fame", "Competition"], answer: 1 },
-  { q: "Human values are necessary for:", options: ["Living with happiness and harmony", "Getting degrees", "Winning awards", "Earning wealth"], answer: 0 },
-  { q: "Right understanding leads to:", options: ["Fear", "Mutual happiness", "Hatred", "Competition"], answer: 1 },
-  { q: "Self-exploration is a process of:", options: ["Self-study", "Understanding oneself and others", "Reading books", "Following orders"], answer: 1 },
-  { q: "Harmony in nature means:", options: ["Coexistence of all entities", "Survival of the fittest", "Human dominance", "Unlimited exploitation"], answer: 0 },
-  { q: "Sukh means:", options: ["Physical comfort only", "Continuous happiness", "Temporary pleasure", "External achievement"], answer: 1 },
-  { q: "The universal human order aims at:", options: ["Competition and profit", "Mutual happiness and prosperity", "Domination", "Individual success"], answer: 1 },
-  { q: "The ultimate goal of value education is:", options: ["Success in exams", "Right understanding and harmony", "Job security", "Wealth accumulation"], answer: 1 }
+{q:"The family is the —",options:["Largest unit of society","Economic unit only","Basic unit of human interaction","Political unit"],answer:2},
+{q:"Harmony in the family is ensured by —",options:["Power and position","Competition","Money and facilities","Values"],answer:3},
+{q:"‘Trust’ in a relationship means —",options:["Doubting the intention","Accepting the intention as it is","Verifying competence repeatedly","Assuming cheating"],answer:1},
+{q:"The foundational value in a relationship is —",options:["Trust","Respect","Love","Affection"],answer:0},
+{q:"When we verify trust again, it leads to —",options:["Strengthening relationship","Harmony in family","Opposition","Justice"],answer:2},
+{q:"Respect means —",options:["Right evaluation","Overevaluation","Underevaluation","Blind admiration"],answer:0},
+{q:"Disrespect happens due to —",options:["Right evaluation","Overevaluation","No evaluation","Equal evaluation"],answer:1},
+{q:"The feeling of respect is expressed as —",options:["Differentiation","Jealousy","Acceptance","Opposition"],answer:2},
+{q:"Justice in human relationships starts from —",options:["Family","Society","Nation","Workplace"],answer:0},
+{q:"The sequence of feelings in relationship is —",options:["Respect→Trust→Love","Love→Trust→Respect","Respect→Affection→Love","Affection→Justice→Care"],answer:2},
+
+{q:"Undifferentiated society leads to —",options:["Universal Human Order","Justice conflict","Prosperity","Conflict"],answer:3},
+{q:"The goal of society is —",options:["Right understanding","Wealth accumulation","Power domination","Sensory pleasure"],answer:0},
+{q:"Universal Human Order is characterized by —",options:["Competition and struggle","Fearless, free society","Division","Domination"],answer:1},
+{q:"The vision for Universal Human Order is —",options:["National development only","Wealth and power","Individual success","Samadhan–Samridhi"],answer:3},
+{q:"Trust on intention leads to —",options:["Verification of competence","Indifference","Doubt and conflict","Acceptance"],answer:3},
+
+{q:"There are how many orders in nature?",options:["Two","Three","Four","Five"],answer:2},
+{q:"The four orders of nature are —",options:["Material, Pranic, Animal, Human","Material, Plant, Animal, Human","Physical, Chemical, Biological, Psychological","Mineral, Plant, Animal, Knowledge"],answer:1},
+{q:"‘Recognizing’ is the activity of —",options:["Human","Pranic","Animal","Material"],answer:0},
+{q:"Material & pranic order fulfil each other through —",options:["Mutual enrichment","Cyclic process","Struggle","Domination"],answer:1},
+{q:"Self-regulation is innate in —",options:["Only human order","Only material order","All orders","Only animal order"],answer:2},
+
+{q:"Mutual fulfilment means —",options:["Exploitation","Competition","Domination","All orders enriching each other"],answer:3},
+{q:"Existence is —",options:["Struggle","Coexistence","Only matter","Only consciousness"],answer:1},
+{q:"Every unit in existence is in —",options:["Harmony","Opposition","Isolation","Competition"],answer:0},
+{q:"The holistic perception of harmony is called —",options:["Theism","Materialism","Madhyasth Darshan","Individualism"],answer:2},
+{q:"In coexistence, matter and consciousness are —",options:["Saturated in each other","In conflict","Separate","Superior/inferior"],answer:0},
+
+{q:"The root cause of disharmony is —",options:["Lack of technology","Lack of resources","Overpopulation","Lack of right understanding"],answer:3},
+{q:"Human values are —",options:["Learnt through preaching","Different for each","Imposed","Naturally acceptable"],answer:3},
+{q:"Ethical human conduct is —",options:["Relative","Position-based","Universal","Profit-based"],answer:2},
+{q:"Ethical conduct is based on —",options:["Right understanding","Social norms","Religious beliefs","Personal liking"],answer:0},
+{q:"Humanistic education aims at —",options:["Skills only","Information only","Values","Competition"],answer:2},
+{q:"Professional ethics without values leads to —",options:["Holistic development","Competence without harmony","Universal order","Prosperity"],answer:1},
+{q:"Holistic technologies are —",options:["Eco-friendly","Profit-oriented","Machine-oriented","Exploitative"],answer:0},
+{q:"Transition to Universal Human Order requires —",options:["Value-based living & education","Technology","Laws","Money"],answer:0},
+{q:"Prosperity means —",options:["More money","Feeling of enough","Luxury","GDP growth"],answer:1},
+{q:"Final outcome of right understanding is —",options:["Individual success","National development","Undivided society","Religious harmony"],answer:2}
 ];
 
-let currentQuestion = 0;
-let score = 0;
+/* ================= QUIZ LOGIC ================= */
+let currentQuestion=0;
+let score=0;
+let timeLeft=2400; // 40 minutes
 let timer;
-let timeLeft = 600;
-let username = "";
-let isAdmin = false;
 
-function checkAdminName() {
-  const name = document.getElementById("username").value.trim().toLowerCase();
-  document.getElementById("adminCodeContainer").style.display = (name === "eswar sai") ? "block" : "none";
-}
-
-function startQuiz() {
-  username = document.getElementById("username").value.trim();
-  const adminInput = document.getElementById("adminCode")?.value.trim() || "";
-  if (!username) return alert("Please enter your name!");
-  if (username.toLowerCase() === "eswar sai" && adminInput === "1234") isAdmin = true;
-
-  document.getElementById("start-screen").style.display = "none";
-  document.getElementById("quiz-screen").style.display = "block";
-  showQuestion();
+function startQuiz(){
+  const name=document.getElementById("username").value.trim();
+  if(!name) return alert("Please enter your name");
+  document.getElementById("start-screen").style.display="none";
+  document.getElementById("quiz-screen").style.display="block";
   startTimer();
+  showQuestion();
 }
 
-function startTimer() {
-  timer = setInterval(() => {
+function startTimer(){
+  timer=setInterval(()=>{
     timeLeft--;
-    let m = Math.floor(timeLeft / 60);
-    let s = timeLeft % 60;
-    document.getElementById("timer").textContent = `Time: ${m}:${s < 10 ? "0" : ""}${s}`;
-    if (timeLeft <= 0) { clearInterval(timer); endQuiz(); }
-  }, 1000);
+    let m=Math.floor(timeLeft/60);
+    let s=timeLeft%60;
+    document.getElementById("timer").textContent=
+      `Time: ${m}:${s<10?"0":""}${s}`;
+    if(timeLeft<=0){clearInterval(timer);endQuiz();}
+  },1000);
 }
 
-function showQuestion() {
-  if (currentQuestion >= quizData.length) return endQuiz();
-  const qData = quizData[currentQuestion];
-  document.getElementById("question").textContent = `${currentQuestion + 1}. ${qData.q}`;
-  const opts = document.getElementById("options");
-  opts.innerHTML = "";
-  qData.options.forEach((opt, i) => {
-    const btn = document.createElement("button");
-    btn.textContent = opt;
-    btn.onclick = () => checkAnswer(i, btn);
-    opts.appendChild(btn);
+function showQuestion(){
+  if(currentQuestion>=quizData.length){endQuiz();return;}
+  document.getElementById("progress").textContent=
+    `Question ${currentQuestion+1} of ${quizData.length}`;
+  const q=quizData[currentQuestion];
+  document.getElementById("question").textContent=q.q;
+  const optDiv=document.getElementById("options");
+  optDiv.innerHTML="";
+  q.options.forEach((o,i)=>{
+    const b=document.createElement("button");
+    b.textContent=o;
+    b.onclick=()=>checkAnswer(i,b);
+    optDiv.appendChild(b);
   });
 }
 
-function checkAnswer(selected, btn) {
-  const qData = quizData[currentQuestion];
-  const allBtns = document.querySelectorAll(".options button");
-  if (selected === qData.answer) { btn.classList.add("correct"); score++; }
-  else { btn.classList.add("wrong"); allBtns[qData.answer].classList.add("correct"); }
-  allBtns.forEach(b => b.disabled = true);
-  setTimeout(() => { currentQuestion++; showQuestion(); }, 1000);
+function checkAnswer(i,btn){
+  const q=quizData[currentQuestion];
+  const buttons=document.querySelectorAll(".options button");
+  if(i===q.answer){btn.classList.add("correct");score++;}
+  else{btn.classList.add("wrong");buttons[q.answer].classList.add("correct");}
+  buttons.forEach(b=>b.disabled=true);
+  setTimeout(()=>{currentQuestion++;showQuestion();},800);
 }
 
-function endQuiz() {
+function endQuiz(){
   clearInterval(timer);
-  document.getElementById("quiz-screen").style.display = "none";
-  document.getElementById("result-screen").style.display = "block";
-  document.getElementById("result").textContent = `${username}, you scored ${score} out of ${quizData.length}`;
-  updateLeaderboard(username, score);
-  displayLeaderboard();
-
-  const btns = document.getElementById("result-buttons");
-  btns.innerHTML = `<button onclick="restartQuiz()">Play Again</button>`;
-  if (isAdmin) {
-    const clearBtn = document.createElement("button");
-    clearBtn.textContent = "Clear Participants";
-    clearBtn.style.backgroundColor = "#d32f2f";
-    clearBtn.style.marginLeft = "10px";
-    clearBtn.onclick = clearParticipants;
-    btns.appendChild(clearBtn);
-  }
-}
-
-function updateLeaderboard(name, points) {
-  let lb = JSON.parse(localStorage.getItem("leaderboard")) || [];
-  const time = new Date().toLocaleString();
-  lb.push({ name, points, time });
-  lb.sort((a, b) => b.points - a.points);
-  localStorage.setItem("leaderboard", JSON.stringify(lb));
-}
-
-function displayLeaderboard() {
-  const lb = JSON.parse(localStorage.getItem("leaderboard")) || [];
-  const list = document.getElementById("leaderboard-list");
-  list.innerHTML = "";
-  if (lb.length === 0) return list.innerHTML = "<li>No scores yet</li>";
-  lb.slice(0, 5).forEach((e, i) => {
-    const li = document.createElement("li");
-    li.textContent = `#${i + 1} ${e.name} - ${e.points} points (${e.time})`;
-    list.appendChild(li);
-  });
-  const all = lb.map((e, i) => `#${i + 1} ${e.name} - ${e.points} points (${e.time})`).join("<br>");
-  const div = document.createElement("div");
-  div.style.marginTop = "20px";
-  div.style.textAlign = "center";
-  div.innerHTML = `<h4>Total Participants: ${lb.length}</h4>
-  <div style="max-height:180px;overflow-y:auto;border:1px solid #ccc;border-radius:8px;padding:10px;background:#f3e5f5;width:90%;margin:auto;text-align:left;">${all}</div>`;
-  list.parentElement.appendChild(div);
-}
-
-function clearParticipants() {
-  if (confirm("Clear all participant data?")) {
-    localStorage.removeItem("leaderboard");
-    alert("Leaderboard cleared!");
-    displayLeaderboard();
-  }
-}
-
-function restartQuiz() {
-  currentQuestion = 0; score = 0; timeLeft = 600;
-  document.getElementById("result-screen").style.display = "none";
-  document.getElementById("start-screen").style.display = "block";
-  document.getElementById("username").value = "";
-  document.getElementById("adminCode").value = "";
+  document.getElementById("quiz-screen").style.display="none";
+  document.getElementById("result-screen").style.display="block";
+  const passMark=Math.ceil(quizData.length*0.4);
+  const status=score>=passMark?"PASS":"FAIL";
+  document.getElementById("result").textContent=
+    `Score: ${score}/${quizData.length} — ${status}`;
 }
 </script>
 </body>
